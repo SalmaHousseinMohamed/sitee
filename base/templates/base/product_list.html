@@ -1,0 +1,29 @@
+{% extends 'main.html' %}
+
+
+{% block content %}
+
+{% include 'searchbar.html' %}
+
+    <div class="product-list">
+        
+        {% for product in products %}
+
+        <div class="image-container">
+            <div class="img-card">
+                <img src="{{ product.image_set.first.image.url }}" alt="{{ product.name }}">
+            </div>
+            <div class="details-advertismnt">
+                <span class="header">
+                    <h4>{{product.name}}</h4>
+                </span>
+                <span class="price">
+                    <h4>$ {{product.price}}</h4>
+                </span>
+            </div>
+    </div>
+    {% endfor %}
+
+    </div>
+
+    {% endblock %}

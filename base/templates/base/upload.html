@@ -1,0 +1,189 @@
+
+    
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+    <div class="product-form-container">
+        <div class="custom-form-container">
+            <div class="form-header">
+                <h2>Upload Ad</h2>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+    
+                <div class="custom-form-field" id="categoryFieldsContainer">
+                    <!-- Category-specific fields will be dynamically added here -->
+                </div>
+    
+                <div class="custom-form-field">
+                    <div class="label-field">
+                        <label for="{{ form.name.id_for_label }}">Brand Name</label>
+                    </div>
+                    <div class="input-field">
+                        {{ form.name }}
+                    </div>
+                </div>
+    
+                <div class="custom-form-field">
+                    <div class="label-field">
+                        <label for="{{ form.price.id_for_label }}">Price</label>
+                    </div>
+                    <div class="input-field">
+                        {{ form.price }}
+                    </div>
+                </div>
+    
+                <div class="custom-form-field">
+                    <div class="label-field">
+                        <label for="{{ form.location.id_for_label }}">Location</label>
+                    </div>
+                    <div class="input-field">
+                        {{ form.location }}
+                    </div>
+                </div>
+    
+                <div class="custom-form-field">
+                    <div class="label-field">
+                        <label for="{{ form.condition.id_for_label }}">Condition</label>
+                    </div>
+                    <div class="input-field">
+                        {{ form.condition }}
+                    </div>
+                </div>
+    
+                <div class="custom-form-field">
+                    <div class="label-field">
+                        <label for="{{ form.description.id_for_label }}">Description</label>
+                    </div>
+                    <div class="input-field">
+                        {{ form.description }}
+                    </div>
+                </div>
+    
+                <!-- Additional form fields for product information based on category -->
+                {% if category.name == 'Cars' %}
+                    <div class="custom-form-field">
+                        <div class="label-field">
+                            <label for="{{ form.motortype.id_for_label }}">Motor Type</label>
+                        </div>
+                        <div class="input-field">
+                            {{ form.motortype }}
+                        </div>
+                    </div>
+                    <div class="custom-form-field">
+                        <div class="label-field">
+                            <label for="{{ form.geartype.id_for_label }}">Gear Type</label>
+                        </div>
+                        <div class="input-field">
+                            {{ form.geartype }}
+                        </div>
+                    </div>
+                    <div class="custom-form-field">
+                        <div class="label-field">
+                            <label for="{{ form.year.id_for_label }}">Car Year</label>
+                        </div>
+                        <div class="input-field">
+                            {{ form.year }}
+                        </div>
+                    </div>
+                    <div class="custom-form-field">
+                        <div class="label-field">
+                            <label for="{{ form.color.id_for_label }}">Car Color</label>
+                        </div>
+                        <div class="input-field">
+                            {{ form.color }}
+                        </div>
+                    </div>
+                {% elif category.name == 'Home' %}
+                    <div class="custom-form-field">
+                        <div class="label-field">
+                            <label for="{{ form.num_rooms.id_for_label }}">Number of Rooms</label>
+                        </div>
+                        <div class="input-field">
+                            {{ form.num_rooms }}
+                        </div>
+                    </div>
+                    <div class="custom-form-field">
+                        <div class="label-field">
+                            <label for="{{ form.num_baths.id_for_label }}">Number of Baths</label>
+                        </div>
+                        <div class="input-field">
+                            {{ form.num_baths }}
+                        </div>
+                    </div>
+                {% endif %}
+    
+                
+<!-- Image preview -->
+<div class="custom-form-field">
+    <div class="label-field">
+        <label for="images">Select Your Images at Once *</label>
+    </div>
+    <div id="newImageDrop" class="new-image-drop">
+        <div class="file-input">
+            <label for="file-upload" class="file-upload-btn">
+                <img src="https://t4.ftcdn.net/jpg/01/07/57/91/360_F_107579101_QVlTG43Fwg9Q6ggwF436MPIBTVpaKKtb.jpg" alt="">
+                <input type="file" name="images" id="images" multiple>
+            </label>
+        </div>
+    </div>
+    <div id="imagePreview" class="image-preview">
+        <!-- Selected image thumbnails will be displayed here -->
+    </div>
+    </div>
+    
+                <div class="button-field">
+                    <button type="submit">Post Ad</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Update the variable names and class names to match the new names
+        const newImageDrop = document.getElementById('newImageDrop');
+        const imagePreview = document.getElementById('imagePreview');
+    
+        newImageDrop.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            newImageDrop.classList.add('drag-over');
+        });
+    
+        newImageDrop.addEventListener('dragleave', () => {
+            newImageDrop.classList.remove('drag-over');
+        });
+    
+        newImageDrop.addEventListener('drop', (e) => {
+            e.preventDefault();
+            newImageDrop.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            handleImageFiles(files);
+        });
+    
+        newImageDrop.addEventListener('click', () => {
+            document.getElementById('images').click();
+        });
+    
+        const imageInput = document.getElementById('images');
+        imageInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            handleImageFiles(files);
+        });
+    
+        function handleImageFiles(files) {
+            imagePreview.innerHTML = '';
+    
+            for (const file of files) {
+                const imageThumbnail = document.createElement('div');
+                imageThumbnail.classList.add('image-thumbnail');
+                const image = document.createElement('img');
+                image.src = URL.createObjectURL(file);
+                image.alt = 'Image Preview';
+                imageThumbnail.appendChild(image);
+                imagePreview.appendChild(imageThumbnail);
+            }
+        }
+    </script>
+    {% endblock %}
+    

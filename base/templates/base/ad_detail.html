@@ -1,0 +1,113 @@
+{% extends 'main.html' %}
+
+  
+  {% block content %}
+
+  <section class="advertisement-container">
+    <div class="image-swiper-container">
+      <div class="product-image">
+        <img id="main-image" src="{{ product.image_set.first.image.url }}" alt="Main Image">
+      </div>
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          {% for image in product.image_set.all %}
+          <div class="swiper-slide">
+            <img class="swiper-image" src="{{ image.image.url }}" alt="Thumbnail 1">
+          </div>
+          {% endfor %}
+
+         
+        </div>
+       
+      </div>
+    </div>
+    <div class="product-details">
+      <div class="details-container">
+        <div class="product-name">{{ product.name }}</div>
+        <div class="product-price">${{ product.price }}</div>
+        <div class="product-category">Category: {{ product.category }}</div>
+        <div class="product-location">Location: {{ product.location }}</div>
+        <div class="product-description">
+          {{ product.description }}
+                </div>
+      </div>
+    </div>
+    <div class="box1 box">
+      <div class="content">
+          <div class="image">
+            <img src="{{ advertiser.avatar.url }}" alt="Profile Image">
+          </div>
+         
+          <div class="text">
+            <p class="name">{{ advertiser.username }}</p>
+            <p class="job_title">UI / UX Designer</p>
+            <p class="job_discription"> {{ advertiser.bio }}</p>
+          </div>
+          
+          
+              <button class="connect" type="button">+9743009022</button>
+            </div>
+          </div>    </div>
+          <div class="comment-section">
+            <h3>Write down Comment</h3>
+            <form class="post-comment-form" method="post" action="{% url 'product_detail' product_id=product.id %}">
+              {% csrf_token %}
+              <input type="text" class="comment-input" placeholder="Post a comment..." name="comment_text">
+              <button type="submit" class="post-comment-icon">&#x1F4AC;</button>
+            </form>
+          </div>
+          
+          <div class="comment-list">
+            {% for comment in comments %}
+            <div class="comment-item">
+              <div class="user-profile">
+                <img src="{{comment.user.avatar.url}}" alt="User Profile">
+              </div>
+              <div class="comment-details">
+                <div>
+                  <span class="comment-username">@{{comment.user.username}} </span>
+                  <span class="comment-date">Posted on: {{comment.timestamp}} ago</span>
+                </div>
+                <div class="comment-text">
+                  {{comment.text}}            
+                    </div>
+              </div>
+              <div class="delete-comment-icon" onclick="deleteComment()">❌</div>
+              {% endfor %}
+
+            </div>
+            </div>
+            
+        
+          
+  </section>
+
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    const swiperContainer = document.querySelector('.swiper-container');
+    const swiperImages = document.querySelectorAll('.swiper-image');
+    const mainImage = document.getElementById('main-image');
+
+    let swiper = new Swiper(swiperContainer, {
+      slidesPerView: 4, // Show 4 initial preview images
+      spaceBetween: 10,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    });
+
+    // Add a click event listener to each image
+    swiperImages.forEach((image, index) => {
+      image.addEventListener('click', () => {
+        mainImage.src = image.src;
+      });
+    });
+  </script>
+</body>
+</html>
+{% endblock %}

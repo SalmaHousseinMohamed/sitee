@@ -1,0 +1,72 @@
+{% extends 'main.html' %}
+
+{% load static %}
+{% block content %}
+  
+       
+     <section class="products-container">
+     
+        <div class="side-menu">
+            <ul>
+                {% for category in categories %}
+                {% if not category.parent_category %}
+                <li class="parent-category">
+                    <img class="icon" src="{{ category.image.url }}" alt="">
+                    {% if category.subcategories.all %}
+                   
+                    <span class="side-menu-item">{{ category.name }}</span>
+                    
+                    <ul class="subcategories">
+                        {% for subcategory in category.subcategories.all %}
+                        <li>
+                            <li><a href="{% url 'product_list' subcategory.id %}">{{ subcategory.name }}</a></li>
+    
+                        
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <a href="{% url 'product_list' category.id %}" class="side-menu-item">{{ category.name }}</a>
+    
+                  
+                  
+                    {% endif %}
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="ad-design">
+            <img src="{% static 'images/Design.png' %}" alt="Logo">
+        </div>
+        <div class="title">
+          <h2>Our Products</h2>
+        </div>
+  <div class="products">
+            {% for product in products %}
+              <div class="ad-img-container">
+                <div class="ad-img-card">
+                  <a href="{% url 'product_detail' product.id %}">
+                    {% if product.image_set.all %}
+                      <img src="{{ product.image_set.first.image.url }}" alt="{{ product.name }}">
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="advertise-info">
+                  <span class="header">${{ product.name }} </span>
+                  <span class="price">${{ product.price }} </span>
+                  <span class="date">13 days ago </span>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          
+
+     </section>
+      
+
+
+
+
+     {% endblock %}
+
+

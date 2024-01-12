@@ -1,0 +1,43 @@
+{% load static %}
+
+<div class="logo-container">
+    <div class="logo-img">
+        <img src="{% static 'images/gobonimo.png' %}" alt="Logo">
+    </div>
+</div>
+
+<div class="navbar-container">
+    <div class="navbar">
+        <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">Login</a></li>
+        </ul>
+    </div>
+    <form method="GET" action="{% url 'search_products' %}">
+
+    <div class="search-panel">
+            <input type="text" name="keyword" id="" placeholder="Keyword">
+            <input type="text" name="Location" id="" placeholder="Location">
+            <button type="submit">Search</button>
+    </div>
+</form>
+
+    <div class="navbar-right">
+        <ul>
+            <li><a href="{% url 'menu' %}">Post Ad</a></li>
+
+            {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-btn">Settings</a>
+                    <ul class="dropdown-content">
+                        <li><a href="{% url 'view_profile' user.username %}">My Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+</div>

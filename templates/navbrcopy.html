@@ -1,0 +1,55 @@
+{% load static %}
+
+<div class="navbar-container">
+    <div class="navbar">
+        <li><a href="">salmamacash@gmail.com</a></li>
+        <li><a href="">+974202220</a></li>
+    </div>
+    <div class="navbar-right">
+        
+        <!-- Django template for login/logout -->
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+    </div>
+</div>
+
+<div class="second-navbar-container">
+    <div class="logo-container">
+        <img src="{% static 'images/gobonimo.png' %}" alt="Logo">
+        </div>
+   
+    <div class="navbar-center">
+    
+        <li>
+            <a style="color:#000; text-decoration: none;" href="{% url 'menu' %}" class="Post-button">Post Advertisement</a>
+
+        </li>
+       
+    </div>
+    <div class="nav">
+        {% if user.is_authenticated %}
+        <div class="dropdown">
+            
+            <button class="dropbtn">Settings
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content" id="userDropdown">
+                <a href="{% url 'view_profile' user.username %}">My Account</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+          
+        </div>
+        
+    {% endif %}
+
+         <!-- Dropdown menu for authenticated user -->
+       
+    </div>
+
+   
+  
+</div>    
+

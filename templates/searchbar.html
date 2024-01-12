@@ -1,0 +1,43 @@
+{% load static %}
+
+
+<section class="advetisement-container">
+    <div class="side-menu">
+        <ul>
+            {% for category in categories %}
+            {% if not category.parent_category %}
+            <li class="parent-category">
+                <img class="icon" src="{{ category.image.url }}" alt="">
+                {% if category.subcategories.all %}
+               
+                <span class="side-menu-item">{{ category.name }}</span>
+                
+                <ul class="subcategories">
+                    {% for subcategory in category.subcategories.all %}
+                    <li>
+                        <li><a href="{% url 'product_list' subcategory.id %}">{{ subcategory.name }}</a></li>
+
+                    
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <a href="{% url 'product_list' category.id %}" class="side-menu-item">{{ category.name }}</a>
+
+              
+              
+                {% endif %}
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    <form method="GET" action="{% url 'search_products' %}">
+
+<div class="search-panel-container">
+<div class="search-panel">
+    <input type="text" class="search-input" required name="keyword" placeholder="Keyword">
+    <input type="text" class="search-input" require name="location" placeholder="Location">
+    <button type="submit" class="search-button">Search</button>
+
+</div>
+</div>

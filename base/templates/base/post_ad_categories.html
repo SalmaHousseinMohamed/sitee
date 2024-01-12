@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+
+{% block content %}
+    <div class="main-container">
+        <div class="categories-menu">
+            <ul style="text-align: center;">
+                <li > <img  class="icon"  src="https://www.svgrepo.com/show/447582/click.svg" alt="">Select Category</li>
+
+                {% for category in categories %}
+                    {% if not category.parent_category %}
+                        <li class="parent-category">
+                            <img class="icon" src="{{ category.image.url }}" alt="">
+                            {% if category.subcategories.all %}
+                                <span class="categories-menu-item">{{ category.name }} </span>
+                                <ul class="subcategories">
+                                    {% for subcategory in category.subcategories.all %}
+                                        <li>
+                                            <img class="icon" src="{{ subcategory.image.url }}" alt="">
+                                            <a href="{% url 'product_form' subcategory.id %}" class="subcategory-link"
+                                               data-subcategory-id="{{ subcategory.id }}"
+                                               data-subcategory-name="{{ subcategory.name }}">{{ subcategory.name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <a href="{% url 'product_form' category.id %}" class="side-menu-item">{{ category.name }}</a>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="google-ads-here">
+            <div class="ads">
+                <h3>ads will be posted here</h3>
+            </div>
+        </div>
+    </div>
+{% endblock %}

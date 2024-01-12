@@ -1,0 +1,99 @@
+
+{% extends 'main.html' %}
+
+
+{% block content %}
+{% include 'searchbar.html' %}
+<section class="advertisemet-details-container">
+    <div class="sidemenu-header">
+        <h4>Select Category</h4>
+    </div>
+    <div class="advertisement-header">
+        <div class="sort-filter-container">
+            <div class="sort-by">
+                <select class="sort-dropdown">
+                    <option value="popular">Sort By</option>
+                    <option value="price-low-to-high">Price: Low to High</option>
+                    <option value="price-high-to-low">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="side-menu">
+        <ul>
+            <li>Home</li>
+            {% for category in categories %}
+            {% if not category.parent_category %}
+            <li class="parent-category">
+                {% if category.subcategories.all %}
+                <span class="side-menu-item">{{ category.name }}</span>
+                <ul class="subcategories">
+                    {% for subcategory in category.subcategories.all %}
+                    <li>
+                        <a href="{% url 'product_form' subcategory.id %}" class="subcategory-link"
+                           data-subcategory-id="{{ subcategory.id }}"
+                           data-subcategory-name="{{ subcategory.name }}">{{ subcategory.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <a href="{% url 'product_form' category.id %}" class="side-menu-item">{{ category.name }}</a>
+                {% endif %}
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="advertisement-list">
+        <!-- Add Django code here to loop through products -->
+        {% for product in products %}
+        <div class="img-card">
+            <a href="{% url 'product_detail' product.id %}">
+                {% if product.image_set.all %}
+                <!-- Check if there are images associated with the product -->
+                <img src="{{ product.image_set.first.image.url }}" alt="{{ product.name }}">
+                {% endif %}            </a>
+
+                <div class="advertisement-details">
+                    <h4>{{ product.name }}</h4>
+                    <span class="views">Views: 555</span>
+                    <span class="price">Price: ${{ product.price }}</span>
+                </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+
+
+
+{% extends 'main.html' %}
+{% block content %}
+{% include 'searchbar.html' %}
+
+<h2 class="our-products">Our Products</h2>
+    
+    <div class="advertise-container">
+        {% for product in products %}
+
+        <div class="ad-img-container">
+            <div class="ad-img-card">
+                <a href="{% url 'product_detail' product.id %}">
+                    {% if product.image_set.all %}
+                    <img src="{{ product.image_set.first.image.url }}" alt="{{ product.name }}">
+                    {% endif %}           
+                 </a>          
+                  </div>
+            <div class="advertise-info">
+                <span class="header">${{ product.name }} </span>
+                <span class="price">${{ product.price }} </span>
+                <span class="date">13days ago </span>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</section>
+{% endblock %}
